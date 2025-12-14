@@ -8,8 +8,10 @@ cc_library(
         "//s2/base:logging",
         "@abseil-cpp//absl/log:absl_check",
         "@abseil-cpp//absl/log:log",
-        "@boringssl//:crypto",
-    ],
+    ] + select({
+        "//:use_openssl_setting": ["@openssl//:crypto"],
+        "//conditions:default": ["@boringssl//:crypto"],
+    }),
 )
 
 cc_test(

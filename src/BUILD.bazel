@@ -1,4 +1,16 @@
+load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
+
 package(default_visibility = ["//visibility:public"])
+
+bool_flag(
+    name = "use_openssl",
+    build_setting_default = False,
+)
+
+config_setting(
+    name = "use_openssl_setting",
+    flag_values = {":use_openssl": "True"},
+)
 
 cc_library(
     name = "s2",
@@ -235,6 +247,7 @@ cc_library(
         "//s2:thread_testing.h",
         "//s2:value_lexicon.h",
     ],
+    includes = [""],
     deps = [
         "//s2/base:logging",
         "//s2/base:spinlock",
