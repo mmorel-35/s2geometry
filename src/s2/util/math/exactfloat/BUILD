@@ -6,8 +6,8 @@ cc_library(
     hdrs = ["exactfloat.h"],
     deps = [
         "//s2/base:logging",
-        "@abseil-cpp//absl/log:log",
         "@abseil-cpp//absl/log:absl_check",
+        "@abseil-cpp//absl/log:log",
         "@boringssl//:crypto",
     ],
 )

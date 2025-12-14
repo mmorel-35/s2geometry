@@ -12,8 +12,8 @@ cc_library(
     deps = [
         "//s2/util/bits",
         "@abseil-cpp//absl/log",
-        "@abseil-cpp//absl/log:check",
         "@abseil-cpp//absl/log:absl_check",
+        "@abseil-cpp//absl/log:check",
     ],
 )
 
