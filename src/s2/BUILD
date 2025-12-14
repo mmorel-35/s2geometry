@@ -2,7 +2,7 @@ package(default_visibility = ["//visibility:public"])
 
 exports_files(
     glob(
-        include = [
+        [
             "internal/*.h",
             "internal/*.cc",
             "r1*.h",
@@ -21,13 +21,12 @@ exports_files(
             "_fp*.cc",
             "mutable*.h",
             "mutable*.cc",
-            "thread_testing.h",
-            "thread_testing.cc",
             "*test.h",
             "*test.cc",
         ],
         allow_empty = True,
-        exclude = [],
-        exclude_directories = 0,
-    ),
+    ) + [
+        "thread_testing.h",
+        "thread_testing.cc",
+    ],
 )
