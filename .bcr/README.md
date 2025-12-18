@@ -12,29 +12,29 @@ The s2geometry project uses [publish-to-bcr](https://github.com/bazel-contrib/pu
 
 ## Files in this Directory
 
-### metadata.template.json
+### config.yml
+Configuration specific to s2geometry:
+- `moduleRoots: ["src"]` - Indicates that MODULE.bazel is in the src/ directory
+
+### src/metadata.template.json
 Contains the project metadata including:
 - Homepage URL
-- Maintainer information
+- Maintainer information (Vincent Tsao and Jesse Rosenstock)
 - Repository location
 - Version tracking (automatically updated)
 
-### source.template.json
+### src/source.template.json
 Defines how to download the source archive:
 - `url`: GitHub release archive URL pattern
 - `strip_prefix`: Since s2geometry's MODULE.bazel is in the `src/` directory, we strip to `{REPO}-{VERSION}/src`
 - `integrity`: Automatically computed by the workflow
 
-### presubmit.yml
+### src/presubmit.yml
 Defines the BCR presubmit tests that will run when the PR is opened:
 - Build targets to verify
 - Test targets to run
 - Platform matrix (Linux, macOS, macOS ARM64)
 - Bazel version matrix (7.x, 8.x, rolling)
-
-### config.yml
-Configuration specific to s2geometry:
-- `moduleRoots: ["src"]` - Indicates that MODULE.bazel is in the src/ directory
 
 ## Setup for Maintainers
 
@@ -52,12 +52,7 @@ To use the automated BCR publication workflow, a maintainer must:
    - Set an appropriate expiration date (consider using no expiration for automation, or set calendar reminders to regenerate)
    - Click "Generate token" and **copy the token immediately** (you won't be able to see it again)
 
-2. **Fork the Bazel Central Registry**
-   - Go to https://github.com/bazelbuild/bazel-central-registry
-   - Click "Fork" to create a fork under the s2geometry organization or your personal account
-   - Note: The fork can be under `google/bazel-central-registry` or another organization
-
-3. **Add the PAT as a Repository Secret**
+2. **Add the PAT as a Repository Secret**
    - Go to the s2geometry repository settings
    - Navigate to Secrets and variables → Actions
    - Click "New repository secret"
@@ -65,12 +60,7 @@ To use the automated BCR publication workflow, a maintainer must:
    - Value: Paste the PAT you created
    - Click "Add secret"
 
-4. **Update the Workflow File**
-   - Edit `.github/workflows/publish-to-bcr.yml`
-   - Update the `registry_fork` parameter to match your fork:
-     ```yaml
-     registry_fork: google/bazel-central-registry
-     ```
+Note: The PAT owner must have a fork of the Bazel Central Registry. The workflow will automatically use the fork associated with the PAT owner's account.
 
 ## How to Publish a New Release
 
@@ -109,8 +99,8 @@ If needed, you can manually trigger the publication workflow:
 - Update the `BCR_PUBLISH_TOKEN` secret
 
 ### Workflow Fails with "Fork Not Found"
-- Verify the `registry_fork` parameter in the workflow file points to a valid fork
-- Ensure the fork is accessible by the PAT owner
+- Ensure the PAT owner has a fork of bazelbuild/bazel-central-registry
+- Verify the fork is accessible by the PAT owner
 
 ### BCR PR Fails Presubmit Tests
 - Check the presubmit.yml configuration in this directory
@@ -118,10 +108,11 @@ If needed, you can manually trigger the publication workflow:
 - The BCR presubmit will show specific error messages
 
 ### Module Not Found or Wrong Path
-- This usually indicates an issue with `moduleRoots` in config.yml or `strip_prefix` in source.template.json
+- This usually indicates an issue with `moduleRoots` in config.yml or `strip_prefix` in src/source.template.json
 - For s2geometry, MODULE.bazel is in `src/`, so:
   - `config.yml` should have `moduleRoots: ["src"]`
-  - `source.template.json` should have `strip_prefix: "{REPO}-{VERSION}/src"`
+  - `src/source.template.json` should have `strip_prefix: "{REPO}-{VERSION}/src"`
+  - Template files are in `.bcr/src/` to match the module structure
 
 ## Security Notes
 

@@ -21,9 +21,6 @@ jobs:
     uses: bazel-contrib/publish-to-bcr/.github/workflows/publish.yaml@v1.0.0
     with:
       tag_name: ${{ github.event_name == 'release' && github.event.release.tag_name || inputs.tag_name }}
-      # IMPORTANT: Update this to point to your fork of the BCR
-      # For example: google/bazel-central-registry
-      registry_fork: google/bazel-central-registry
       # Enable attestations for enhanced security
       attest: true
     permissions:
